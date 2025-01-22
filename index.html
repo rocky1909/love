@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: url('background-photo.jpg') center/cover no-repeat, radial-gradient(circle, rgba(255, 117, 140, 0.8), rgba(255, 126, 179, 0.8), rgba(250, 208, 196, 0.8));
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 2s;
+        }
+
+        .title {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: glow 3s infinite;
+            text-shadow: 3px 3px 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .photos {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            margin-bottom: 30px;
+            padding: 10px;
+        }
+
+        .photos img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, filter 0.3s;
+        }
+
+        .photos img:hover {
+            transform: scale(1.2);
+            filter: brightness(1.2);
+            border: 3px solid #fff;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, #e91e63, #ff4081);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.6);
+            animation: buttonPulse 3s infinite;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #d81b60, #f06292);
+            transform: scale(1.1);
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 2em;
+            display: none;
+            animation: fadeIn 1s;
+        }
+
+        .sticker {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            top: 20px;
+            left: 20px;
+            animation: spin 6s infinite linear;
+        }
+
+        .sticker-right {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            bottom: 20px;
+            right: 20px;
+            animation: spin 6s infinite linear reverse;
+        }
+
+        .floating-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .heart {
+            width: 25px;
+            height: 25px;
+            background: #ff4081;
+            position: absolute;
+            animation: float 5s infinite ease-in;
+            transform: rotate(45deg);
+        }
+
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: #ff4081;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -12.5px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: -12.5px;
+            top: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 3px 3px 10px rgba(255, 255, 255, 0.8); }
+            50% { text-shadow: 3px 3px 20px rgba(255, 255, 255, 1); }
+            100% { text-shadow: 3px 3px 10px rgba(255, 255, 255, 0.8); }
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { box-shadow: 0 5px 15px rgba(233, 30, 99, 0.6); }
+            50% { box-shadow: 0 5px 30px rgba(233, 30, 99, 0.8); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.6);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-50vh) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(1.4);
+            }
+        }
+
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Will You Be My Valentine?</h1>
+
+        <div class="photos">
+            <img src="photo1.jpg" alt="Photo 1">
+            <img src="photo2.jpg" alt="Photo 2">
+            <img src="photo3.jpg" alt="Photo 3">
+            <img src="photo4.jpg" alt="Photo 4">
+        </div>
+
+        <button onclick="showMessage()">Yesss(yahi click krna padega kuki no ka koi option hi nhi hai shona)</button>
+        <p id="message"></p>
+
+        <audio id="bg-music" loop autoplay>
+            <source src="background-music.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+        <img src="sticker1.png" alt="Love Sticker" class="sticker">
+        <img src="sticker1.png" alt="Heart Sticker" class="sticker-right">
+
+        <div class="floating-hearts"></div>
+    </div>
+
+    <script>
+        function showMessage() {
+            const message = document.getElementById('message');
+            message.style.display = 'block';
+            message.innerText = "You are my everything! now you are mine forever ❤️";
+        }
+
+        // Generate floating hearts
+        const floatingHearts = document.querySelector('.floating-hearts');
+
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.animationDuration = `${3 + Math.random() * 4}s`;
+            floatingHearts.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }, 400);
+    </script>
+</body>
+</html>
